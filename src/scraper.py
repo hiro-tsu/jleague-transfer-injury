@@ -43,12 +43,32 @@ def parse_articles(soup: BeautifulSoup) -> list[dict]:
             continue
 
         title = title_tag.get_text(strip=True)
+        url = title_tag.get("href", "")
         date_raw = date_tag.get_text(strip=True)
         m = DATE_RE.search(date_raw)
         date = m.group(1) if m else date_raw
 
-        items.append({"title": title, "date": date})
+        items.append({"title": title, "date": date, "url": url})
     return items
+
+
+def load_existing(out_path: Path) -> list[dict]:
+    if not out_path.exists():
+        return []
+    try:
+        data = json.loads(out_path.read_text())
+        return data.get("articles", [])
+    except (json.JSONDecodeError, KeyError):
+        return []
+
+
+def merge(existing: list[dict], new: list[dict]) -> list[dict]:
+    seen = {a["url"] for a in existing if a.get("url")}
+    for article in new:
+        if article.get("url") and article["url"] not in seen:
+            existing.append(article)
+            seen.add(article["url"])
+    return existing
 
 
 def scrape_division(url: str) -> list[dict]:
@@ -58,24 +78,28 @@ def scrape_division(url: str) -> list[dict]:
 
 def main():
     OUTPUT_DIR.mkdir(exist_ok=True)
+    out_path = OUTPUT_DIR / "data.json"
 
     jst = timezone(timedelta(hours=9))
     now = datetime.now(jst).isoformat()
 
-    all_articles = []
+    new_articles = []
     for division, url in TARGETS.items():
         print(f"Scraping {division.upper()}...")
         articles = scrape_division(url)
         print(f"  -> {len(articles)} articles")
-        all_articles.extend(articles)
+        new_articles.extend(articles)
         time.sleep(2)
+
+    existing = load_existing(out_path)
+    merged = merge(existing, new_articles)
+    print(f"Total after merge: {len(merged)} articles (+{len(merged) - len(existing)} new)")
 
     results = {
         "updated_at": now,
-        "articles": all_articles,
+        "articles": merged,
     }
 
-    out_path = OUTPUT_DIR / "data.json"
     out_path.write_text(json.dumps(results, ensure_ascii=False, indent=2))
     print(f"Saved to {out_path}")
 
