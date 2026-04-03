@@ -52,7 +52,8 @@ def parse_articles(soup: BeautifulSoup) -> list[dict]:
             continue
 
         title = title_tag.get_text(strip=True)
-        url = title_tag.get("href", "")
+        href = title_tag.get("href", "")
+        url = href if href.startswith("http") else f"https://www.jleague.jp{href}"
         date_raw = date_tag.get_text(strip=True)
         m = DATE_RE.search(date_raw)
         date = m.group(1) if m else date_raw
