@@ -103,6 +103,10 @@ def main():
     existing = load_existing(out_path)
     merged = merge(existing, new_articles)
     merged.sort(key=date_sort_key, reverse=True)
+
+    cutoff = (datetime.now(timezone(timedelta(hours=9))) - timedelta(days=10)).strftime("%Y-%m-%d")
+    merged = [a for a in merged if date_sort_key(a) >= cutoff]
+
     print(f"Total after merge: {len(merged)} articles (+{len(merged) - len(existing)} new)")
 
     results = {
