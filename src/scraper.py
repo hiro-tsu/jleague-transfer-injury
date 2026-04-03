@@ -26,6 +26,15 @@ OUTPUT_DIR = Path(__file__).parent.parent / "output"
 
 # e.g. "2026年4月3日(金) 17:30" -> "2026年4月3日(金)"
 DATE_RE = re.compile(r"(\d+年\d+月\d+日\([^)]+\))")
+# e.g. "2026年4月3日(金)" -> "2026-04-03" for sorting
+DATE_SORT_RE = re.compile(r"(\d+)年(\d+)月(\d+)日")
+
+
+def date_sort_key(article: dict) -> str:
+    m = DATE_SORT_RE.search(article.get("date", ""))
+    if not m:
+        return "0000-00-00"
+    return f"{m.group(1)}-{m.group(2).zfill(2)}-{m.group(3).zfill(2)}"
 
 
 def fetch(url: str) -> BeautifulSoup:
@@ -93,6 +102,7 @@ def main():
 
     existing = load_existing(out_path)
     merged = merge(existing, new_articles)
+    merged.sort(key=date_sort_key, reverse=True)
     print(f"Total after merge: {len(merged)} articles (+{len(merged) - len(existing)} new)")
 
     results = {
