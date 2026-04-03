@@ -51,12 +51,9 @@ def parse_articles(soup: BeautifulSoup) -> list[dict]:
     return items
 
 
-def scrape_division(division: str, url: str) -> dict:
+def scrape_division(url: str) -> list[dict]:
     soup = fetch(url)
-    return {
-        "division": division,
-        "articles": parse_articles(soup),
-    }
+    return parse_articles(soup)
 
 
 def main():
@@ -65,17 +62,18 @@ def main():
     jst = timezone(timedelta(hours=9))
     now = datetime.now(jst).isoformat()
 
-    results = {
-        "updated_at": now,
-        "divisions": [],
-    }
-
+    all_articles = []
     for division, url in TARGETS.items():
         print(f"Scraping {division.upper()}...")
-        data = scrape_division(division, url)
-        print(f"  -> {len(data['articles'])} articles")
-        results["divisions"].append(data)
+        articles = scrape_division(url)
+        print(f"  -> {len(articles)} articles")
+        all_articles.extend(articles)
         time.sleep(2)
+
+    results = {
+        "updated_at": now,
+        "articles": all_articles,
+    }
 
     out_path = OUTPUT_DIR / "data.json"
     out_path.write_text(json.dumps(results, ensure_ascii=False, indent=2))
