@@ -2,7 +2,7 @@ name: Scrape J-League Transfer & Injury Info
 
 on:
   schedule:
-    - cron: '0 1,13 * * *'  # 毎日 JST 10:00 と 22:00 (UTC 1:00 と 13:00)
+    - cron: '0 3,11 * * *'  # 毎日 JST 12:00 と 20:00 (UTC 3:00 と 11:00)
   workflow_dispatch:         # 手動実行も可能
 
 jobs:
