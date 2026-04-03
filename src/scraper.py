@@ -1,9 +1,10 @@
 """
 J-League transfer & injury scraper.
-HTML structure TBD — update parse_* functions once confirmed.
+Fetches news from J-League official site for J1/J2/J3.
 """
 
 import json
+import re
 import time
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
@@ -11,11 +12,10 @@ from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
 
-# --- Target URLs (update if needed) ---
 TARGETS = {
-    "j1": "https://example.com/j1",  # TODO: replace with actual URL
-    "j2": "https://example.com/j2",  # TODO: replace with actual URL
-    "j3": "https://example.com/j3",  # TODO: replace with actual URL
+    "j1": "https://www.jleague.jp/news/search/?category=2&team=&year=&month=",
+    "j2": "https://www.jleague.jp/news/search/?category=4&team=&year=&month=",
+    "j3": "https://www.jleague.jp/news/search/?category=6&team=&year=&month=",
 }
 
 HEADERS = {
@@ -24,6 +24,9 @@ HEADERS = {
 
 OUTPUT_DIR = Path(__file__).parent.parent / "output"
 
+# e.g. "2026年4月3日(金) 17:30" -> "2026年4月3日(金)"
+DATE_RE = re.compile(r"(\d+年\d+月\d+日\([^)]+\))")
+
 
 def fetch(url: str) -> BeautifulSoup:
     resp = requests.get(url, headers=HEADERS, timeout=30)
@@ -31,22 +34,28 @@ def fetch(url: str) -> BeautifulSoup:
     return BeautifulSoup(resp.text, "lxml")
 
 
-def parse_transfers(soup: BeautifulSoup) -> list[dict]:
-    """TODO: implement after HTML structure is confirmed."""
-    return []
+def parse_articles(soup: BeautifulSoup) -> list[dict]:
+    items = []
+    for li in soup.select("ul.newsList li"):
+        title_tag = li.select_one("h3.articleTit a")
+        date_tag = li.select_one("p.timeStamp")
+        if not title_tag or not date_tag:
+            continue
 
+        title = title_tag.get_text(strip=True)
+        date_raw = date_tag.get_text(strip=True)
+        m = DATE_RE.search(date_raw)
+        date = m.group(1) if m else date_raw
 
-def parse_injuries(soup: BeautifulSoup) -> list[dict]:
-    """TODO: implement after HTML structure is confirmed."""
-    return []
+        items.append({"title": title, "date": date})
+    return items
 
 
 def scrape_division(division: str, url: str) -> dict:
     soup = fetch(url)
     return {
         "division": division,
-        "transfers": parse_transfers(soup),
-        "injuries": parse_injuries(soup),
+        "articles": parse_articles(soup),
     }
 
 
@@ -64,8 +73,9 @@ def main():
     for division, url in TARGETS.items():
         print(f"Scraping {division.upper()}...")
         data = scrape_division(division, url)
+        print(f"  -> {len(data['articles'])} articles")
         results["divisions"].append(data)
-        time.sleep(2)  # polite delay between requests
+        time.sleep(2)
 
     out_path = OUTPUT_DIR / "data.json"
     out_path.write_text(json.dumps(results, ensure_ascii=False, indent=2))
