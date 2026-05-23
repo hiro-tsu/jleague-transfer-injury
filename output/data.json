@@ -1,6 +1,11 @@
 {
-  "updated_at": "2026-05-22T22:17:55.840546+09:00",
+  "updated_at": "2026-05-23T14:55:57.213183+09:00",
   "articles": [
+    {
+      "title": "曺 貴裁監督が長崎戦をもって退任【京都】",
+      "date": "2026年5月23日(土)",
+      "url": "https://www.jleague.jp/news/article/33934/"
+    },
     {
       "title": "GK上林の負傷を発表【松本】",
       "date": "2026年5月22日(金)",
@@ -100,11 +105,6 @@
       "title": "MF岩尾の負傷を発表【徳島】",
       "date": "2026年5月13日(水)",
       "url": "https://www.jleague.jp/news/article/33885/"
-    },
-    {
-      "title": "エンゲルス監督の契約を解除。新監督に大谷氏が就任【徳島】",
-      "date": "2026年5月12日(火)",
-      "url": "https://www.jleague.jp/news/article/33859/"
     }
   ]
 }
