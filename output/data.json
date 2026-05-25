@@ -1,6 +1,11 @@
 {
-  "updated_at": "2026-05-24T20:55:52.127870+09:00",
+  "updated_at": "2026-05-25T15:58:09.023952+09:00",
   "articles": [
+    {
+      "title": "２０２６／２７Ｊリーグ 試合日程の発表スケジュールについて",
+      "date": "2026年5月25日(月)",
+      "url": "https://www.jleague.jp/news/article/33957/"
+    },
     {
       "title": "MF落合が全治3か月の負傷【新潟】",
       "date": "2026年5月24日(日)",
@@ -115,11 +120,6 @@
       "title": "FWマルコ トゥーリオが全治3か月の負傷【京都】",
       "date": "2026年5月15日(金)",
       "url": "https://www.jleague.jp/news/article/33899/"
-    },
-    {
-      "title": "DF広瀬に第一子が誕生【鹿児島】",
-      "date": "2026年5月14日(木)",
-      "url": "https://www.jleague.jp/news/article/33893/"
     }
   ]
 }
