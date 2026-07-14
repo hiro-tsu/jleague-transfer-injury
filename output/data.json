@@ -1,6 +1,11 @@
 {
-  "updated_at": "2026-07-13T22:10:27.051657+09:00",
+  "updated_at": "2026-07-14T14:17:34.145175+09:00",
   "articles": [
+    {
+      "title": "「MUFG THE国立DAY」、開催試合追加のお知らせ- 明治安田Ｊ３第24節 福島 vs. 金沢をMUFG国立で開催 -",
+      "date": "2026年7月14日(火)",
+      "url": "https://www.jleague.jp/news/article/34429/"
+    },
     {
       "title": "鳥栖よりDF上原が完全移籍加入【福島】",
       "date": "2026年7月13日(月)",
@@ -155,31 +160,6 @@
       "title": "MF表原とFW齋藤がSchwarz-Weis Bregenzへ完全移籍【栃木Ｃ】",
       "date": "2026年7月4日(土)",
       "url": "https://www.jleague.jp/news/article/34380/"
-    },
-    {
-      "title": "國學院大MF辻の2027/28シーズン加入が内定【清水】",
-      "date": "2026年7月3日(金)",
-      "url": "https://www.jleague.jp/news/article/34378/"
-    },
-    {
-      "title": "ホール・ファカン・クラブよりMFウォン ドゥジェが完全移籍加入【清水】",
-      "date": "2026年7月3日(金)",
-      "url": "https://www.jleague.jp/news/article/34377/"
-    },
-    {
-      "title": "柏よりFW小見が期限付き移籍加入【Ｃ大阪】",
-      "date": "2026年7月3日(金)",
-      "url": "https://www.jleague.jp/news/article/34375/"
-    },
-    {
-      "title": "町田よりFWナ サンホが完全移籍加入【岡山】",
-      "date": "2026年7月3日(金)",
-      "url": "https://www.jleague.jp/news/article/34374/"
-    },
-    {
-      "title": "Ｇ大阪よりMF中村が完全移籍加入【栃木SC】",
-      "date": "2026年7月3日(金)",
-      "url": "https://www.jleague.jp/news/article/34373/"
     }
   ]
 }
